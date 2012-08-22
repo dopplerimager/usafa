@@ -1,0 +1,39 @@
+#This is a comment line, and should be ignored
+
+# %% is read as a steps per order control line
+# && is read as a phasemap control line
+# they are only executed if either of them needs refreshing,
+# as determined by the console
+
+# Commands and args are:
+# spectrum: [lambda, zone settings file, file name format]
+# stepsperorder: [lambda, start volt offset, stop volt offset, number of scans, step size, gain, exp time]
+# phasemapper: [source1, source2, lambda1, lambda2, cam_gain, exp time, smooth_size]
+# shutterclose: [dummy]
+# shutdownspex: [dummy]
+# cameraset: [exposure time, gain]
+# runscript: [name of idl pro file to run, no extension needed]
+# mirror: [home_sky | home_cal | drive_sky | drive_cal]
+# cal_switch: [calibration source number]
+
+
+
+
+
+ifsea: [-100, 100] [cont]
+
+	ifut: [18, 20] [cont]
+        	log: [`ut between 18 and 20`] 
+		wait: [5]
+	ifut: [18, 20] [loop]
+
+	ifut: [20.01, 24] [cont]
+        	log: [`ut between 20 and 24`] 
+		wait: [5]
+	ifut: [20.01, 240] [loop]
+
+
+ifsea: [-100, 100] [loop]
+
+
+

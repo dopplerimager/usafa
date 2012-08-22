@@ -1,0 +1,137 @@
+#This is a comment line, and should be ignored
+
+# %% is read as a steps per order control line
+# && is read as a phasemap control line
+# they are only executed if either of them needs refreshing,
+# as determined by the console
+
+# Commands and args are:
+# spectrum: [lambda, zone settings file, file name format]
+# stepsperorder: [lambda, start volt offset, stop volt offset, number of scans, step size, gain, exp time]
+# phasemapper: [source1, source2, lambda1, lambda2, cam_gain, exp time, smooth_size]
+# shutterclose: [dummy]
+# shutdownspex: [dummy]
+# cameraset: [exposure time, gain]
+# runscript: [name of idl pro file to run, no extension needed]
+# mirror: [home_sky | home_cal | drive_sky | drive_cal]
+# cal_switch: [calibration source number]
+
+
+%% stepsperorder: [632.8, 1000, 1100, 15, 2, 1, .05]
+
+&& phasemapper: [1, 1, 632.8, 632.8, 1, 0.05, 3]
+
+	mirror: [home_sky]
+        mirror: [home_cal]
+
+
+# Phase map taken at start and end of each night:
+ifsea: [-5, -4.7] [cont]
+
+        cameraset: [0.05, 1]
+        mirror: [drive_cal] 
+        phasemapper: [1, 1, 632.8, 632.8, 1, 0.05, 3]
+
+ifsea: [-5, -4.7] [loop]
+
+
+# Twilight 732nm O+ loop:
+# filter: [4]  
+# ifsea: [-8.5, -5] [cont]
+#
+#        cameraset: [0.05, 2]   
+#        mirror: [drive_cal] 
+#        spectrum: [632.8, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_CAL_6328_NZ0043.nc`]         
+#	
+#       mirror: [drive_sky]
+#	cameraset: [0.18, 300]
+#        spectrum: [732.0, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_7320_NZ0043.nc`]           
+#        spectrum: [732.0, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_7320_NZ0043.nc`]           
+#
+# ifsea: [-8.5, -5] [loop]
+
+
+# Main Red-Green-OH/O+ loop:
+ifsea: [-100, -8] [cont]
+
+# This was for the 2012 HAARP Campaign
+#       filter: [1]  
+#	ifut: [0, 8] [begin]
+#
+#           cameraset: [0.05, 2]    
+#           mirror: [drive_cal]
+#           spectrum: [632.8, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_CAL_6328_NZ0115.nc`]         
+#
+#           mirror: [drive_sky]
+#           cameraset: [0.18, 554]   
+#           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
+#           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
+#           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
+#
+#	ifut: [0, 8] [end]
+
+
+           cameraset: [0.05, 2]    
+           mirror: [drive_cal]
+           spectrum: [632.8, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_CAL_6328_NZ0115.nc`]         
+
+           mirror: [drive_sky]
+           cameraset: [0.18, 554]
+
+           filter: [1]     
+           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
+
+           filter: [2]     
+           spectrum: [557.7, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_5577_NZ0115.nc`]
+
+           mirror: [drive_cal]
+           cameraset: [0.05, 2]    
+           spectrum: [632.8, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_CAL_6328_NZ0043.nc`]         
+
+           mirror: [drive_sky]
+           cameraset: [0.18, 554]
+
+
+ 	   # DO OH OR 732nm BASED ON SNR/SCAN AT 557.7nm
+	   ifsnr: [0, 10000] [begin]
+              filter: [3]     
+              spectrum: [843.0, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_8430_NZ0043.nc`]           
+	   ifsnr: [0, 10000] [end]
+
+ 	   ifsnr: [10000, 9999999] [begin]
+              filter: [4]     
+              spectrum: [732.0, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_7320_NZ0043.nc`]           
+	   ifsnr: [10000, 9999999] [end]
+
+           cameraset: [0.18, 554]
+           filter: [1]     
+           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
+
+           filter: [2]    
+           spectrum: [557.7, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_5577_NZ0115.nc`]
+
+
+ifsea: [-100, -8] [loop]
+
+
+
+
+
+
+cameraset: [0.05, 1]    
+shutterclose: [1]
+shutdownspex: [1]
+mirror: [drive_cal]
+filter: [1]
+
+# Full daylight stuff:
+ifsea: [-4.7, 100] [cont]
+#        runscript: [script_delay]
+        runscript: [haarp_ftp_data]        
+ifsea: [-4.7, 100] [loop]
+
+
+
+
+
+
