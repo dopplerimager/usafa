@@ -101,21 +101,9 @@ end
 
 ;\\ CALIBRATION SWITCH ROUTINES
 pro AFA_switch, source, $
-				misc, console
-	case source of
-		0: motor_pos = misc.source_map.s0
-		1: motor_pos = misc.source_map.s1
-		2: motor_pos = misc.source_map.s2
-		3: motor_pos = misc.source_map.s3
-		else:
-	endcase
+				misc, console, $
+				home=home
 
-	tx = string(13B)
-	comms_wrapper, misc.port_map.cal_source.number, misc.dll_name, type = 'moxa', /write, data = 'EN'+tx
-	comms_wrapper, misc.port_map.cal_source.number, misc.dll_name, type = 'moxa', /write, data = 'LPC10'+tx
-	comms_wrapper, misc.port_map.cal_source.number, misc.dll_name, type = 'moxa', /write, data = 'LCC5'+tx
-	res = drive_motor(misc.port_map.cal_source.number, misc.dll_name, drive_to = drive_to_pos, speed = 100.)
-	comms_wrapper, misc.port_map.cal_source.number, misc.dll_name, type = 'moxa', /write, data = 'DI'+tx
 end
 
 
