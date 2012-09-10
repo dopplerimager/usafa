@@ -11,7 +11,7 @@ common data_xfer_semaphore, xfer_tstamp
        ftp_script = 'c:\SDI_ftp_script.ftp'
        openw, spunt, ftp_script, /get_lun
        printf, spunt, 'cd data/haarp'
-       printf, spunt, 'lcd c:\users\sdi3000\data\spectra'
+       printf, spunt, 'lcd c:\users\sdi3000\data'
        printf, spunt, 'bin'
        printf, spunt, 'hash'
        printf, spunt, 'prompt'
@@ -24,9 +24,9 @@ common data_xfer_semaphore, xfer_tstamp
        bat_script = 'c:\SDI_data_xfer.bat'
        openw, spunt, bat_script, /get_lun
        printf, spunt, 'c:'
-       printf, spunt, 'cd \users\sdi3000\data\spectra'
-       printf, spunt, 'ftps -user:SDI3000 -password:fabryPER0T fulcrum.gi.alaska.edu -s:' + ftp_script
-       printf, spunt, 'move *.nc .\2011_fall'
+       printf, spunt, 'cd \users\sdi3000\data'
+       printf, spunt, 'ftps -user:SDI3000 -password:fabryPER0T 137.229.27.251 -s:' + ftp_script
+       printf, spunt, 'move *.nc .\sent'
        close, spunt
        free_lun, spunt
 
