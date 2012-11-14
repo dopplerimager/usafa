@@ -4,6 +4,10 @@
 pro AFA_cleanup, misc, console
 
 	;\\ Close up the com ports
+	tx = string(13B)
+	comms_wrapper, misc.port_map.cal_source.number, misc.dll_name, type='moxa', /write, data = 'DI'+tx  ;\\ disable cal source motor
+	comms_wrapper, misc.port_map.mirror.number, misc.dll_name, type='moxa', /write, data = 'DI'+tx  ;\\ disable mirror motor
+
 	comms_wrapper, misc.port_map.cal_source.number, misc.dll_name, type = 'moxa', /close, errcode=errcode
 	console->log, 'Close Calibration Source Port: ' + string(errcode, f='(i0)'), 'InstrumentSpecific'
 	comms_wrapper, misc.port_map.mirror.number, misc.dll_name, type = 'moxa', /close, errcode=res1
@@ -37,8 +41,8 @@ pro AFA_mirror,  drive_to_pos = drive_to_pos, $
 		tx = string(13B)
 
 	;\\ Set current limits
-		comms_wrapper, port, dll_name, type='moxa', /write, data = 'LCC800'  + tx ;\\ set these here to be safe...
-		comms_wrapper, port, dll_name, type='moxa', /write, data = 'LPC1200' + tx
+		comms_wrapper, port, dll_name, type='moxa', /write, data = 'LCC1200'  + tx ;\\ set these here to be safe...
+		comms_wrapper, port, dll_name, type='moxa', /write, data = 'LPC1500' + tx
 
 	;\\ Drive to sky or cal position:
 		if keyword_set(drive_to_pos) then begin
@@ -80,7 +84,7 @@ pro AFA_mirror,  drive_to_pos = drive_to_pos, $
 			if strlowcase(home_motor) eq 'cal' then	begin
 				comms_wrapper, port, dll_name, type='moxa', /write, data = 'HOSP500'  + tx
 				res = drive_motor(port, dll_name, /gohix)
-				res = drive_motor(port, dll_name, drive_to = read_pos + 3000)
+				res = drive_motor(port, dll_name, drive_to = read_pos + 50)
 			endif else begin
 				res = drive_motor(port, dll_name, drive_to = read_pos - 9000)
 			endelse

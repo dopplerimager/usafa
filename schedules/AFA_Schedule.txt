@@ -54,9 +54,9 @@ ifsea: [-5, -4.7] [loop]
 # Main Red-Green-OH/O+ loop:
 ifsea: [-100, -8] [cont]
 
-# This was for the 2012 HAARP Campaign
-#       filter: [1]  
-#	ifut: [0, 8] [begin]
+# This is for the 2012 HAARP Campaign gravity wave exp
+#	filter: [1]  
+#	ifut: [0, 5] [begin]
 #
 #           cameraset: [0.05, 2]    
 #           mirror: [drive_cal]
@@ -68,7 +68,7 @@ ifsea: [-100, -8] [cont]
 #           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
 #           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
 #
-#	ifut: [0, 8] [end]
+#	ifut: [0, 5] [end]
 
 
            cameraset: [0.05, 2]    
@@ -103,12 +103,17 @@ ifsea: [-100, -8] [cont]
 #              filter: [3]     
 #              spectrum: [843.0, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_8430_NZ0043.nc`]           
 #	   ifsnr: [0, 10000] [end]
-#
-# 	   ifsnr: [10000, 9999999] [begin]
-#              filter: [4]     
-#              spectrum: [732.0, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_7320_NZ0043.nc`]           
-#	   ifsnr: [10000, 9999999] [end]
-#
+
+
+	   # Do 732nm if green signal is high enough, follow up with a low-zone-res cal
+ 	   ifsnr: [30000, 9999999] [begin]	      
+              filter: [4]     
+              spectrum: [732.0, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_7320_NZ0043.nc`]           
+	      mirror: [drive_cal]
+	      cameraset: [0.05, 2]    
+	      spectrum: [632.8, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_CAL_6328_NZ0043.nc`]         
+	   ifsnr: [10000, 9999999] [end]
+
 #           cameraset: [0.18, 554]
 #           filter: [1]     
 #           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
@@ -117,10 +122,8 @@ ifsea: [-100, -8] [cont]
 #           spectrum: [557.7, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_5577_NZ0115.nc`]
 
 
+
 ifsea: [-100, -8] [loop]
-
-
-
 
 
 
@@ -131,10 +134,10 @@ mirror: [drive_cal]
 filter: [1]
 
 # Full daylight stuff:
-ifsea: [-4.7, 100] [cont]
+ifsea: [-8, 100] [cont]
 #        runscript: [script_delay]
         runscript: [haarp_ftp_data]        
-ifsea: [-4.7, 100] [loop]
+ifsea: [-8, 100] [loop]
 
 
 
