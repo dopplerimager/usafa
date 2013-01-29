@@ -17,10 +17,12 @@
 # cal_switch: [calibration source number]
 
 
-%% stepsperorder: [632.8, 1000, 1100, 15, 2, 1, .05]
+set_status: [`Start Schedule`]
 
+%% stepsperorder: [632.8, 1000, 1100, 15, 2, 1, .05]
 && phasemapper: [1, 1, 632.8, 632.8, 1, 0.05, 3]
 
+	set_status: [`Homing Motors`]
 	mirror: [home_sky]
         mirror: [home_cal]
 
@@ -30,6 +32,7 @@ ifsea: [-5, -4.7] [cont]
 
         cameraset: [0.05, 1]
         mirror: [drive_cal] 
+	set_status: [`Acquire Phasemap`]
         phasemapper: [1, 1, 632.8, 632.8, 1, 0.05, 3]
 
 ifsea: [-5, -4.7] [loop]
@@ -38,6 +41,7 @@ ifsea: [-5, -4.7] [loop]
 # Twilight 732nm O+ loop:
 # filter: [4]  
 # ifsea: [-8.5, -5] [cont]
+#	set_status: [`Twilight 732`]
 #
 #        cameraset: [0.05, 2]   
 #        mirror: [drive_cal] 
@@ -57,6 +61,7 @@ ifsea: [-100, -8] [cont]
 # This is for the 2012 HAARP Campaign gravity wave exp
 #	filter: [1]  
 #	ifut: [0, 5] [begin]
+	set_status: [`Obs: Red`]
 #
 #           cameraset: [0.05, 2]    
 #           mirror: [drive_cal]
@@ -70,6 +75,8 @@ ifsea: [-100, -8] [cont]
 #
 #	ifut: [0, 5] [end]
 
+#     	   set_status: [`Obs: Red & Green`]
+     	   set_status: [`Obs: Red Only`]
 
            cameraset: [0.05, 2]    
            mirror: [drive_cal]
@@ -81,14 +88,17 @@ ifsea: [-100, -8] [cont]
            filter: [1]     
            spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
 
-           filter: [2]     
-           spectrum: [557.7, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_5577_NZ0115.nc`]
+#           filter: [2]     
+#           spectrum: [557.7, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_5577_NZ0115.nc`]
 
            filter: [1]     
            spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
+           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
+           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
+           spectrum: [630.0, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_6300_NZ0115.nc`]
 
-           filter: [2]     
-           spectrum: [557.7, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_5577_NZ0115.nc`]
+#           filter: [2]     
+#           spectrum: [557.7, default_115_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_5577_NZ0115.nc`]
 
 #           mirror: [drive_cal]
 #           cameraset: [0.05, 2]    
@@ -100,19 +110,22 @@ ifsea: [-100, -8] [cont]
 #
 # 	   # DO OH OR 732nm BASED ON SNR/SCAN AT 557.7nm
 #	   ifsnr: [0, 10000] [begin]
+#	       set_status: [`Obs: OH nz43`]
 #              filter: [3]     
 #              spectrum: [843.0, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_8430_NZ0043.nc`]           
 #	   ifsnr: [0, 10000] [end]
 
 
 	   # Do 732nm if green signal is high enough, follow up with a low-zone-res cal
- 	   ifsnr: [30000, 9999999] [begin]	      
-              filter: [4]     
-              spectrum: [732.0, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_7320_NZ0043.nc`]           
-	      mirror: [drive_cal]
-	      cameraset: [0.05, 2]    
-	      spectrum: [632.8, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_CAL_6328_NZ0043.nc`]         
-	   ifsnr: [10000, 9999999] [end]
+#          Commented 732 stuff out 13-Jan-2013 because filter wheel is getting stuck. MC
+# 	   ifsnr: [30000, 9999999] [begin]	      
+#              filter: [4]     
+#	      set_status: [`Obs: 732 nz43`]
+#              spectrum: [732.0, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_SKY_7320_NZ0043.nc`]           
+#	      mirror: [drive_cal]
+#	      cameraset: [0.05, 2]    
+#	      spectrum: [632.8, OH_43_zones.txt, `Y$_doy$_Date_0n$_0d$_CAL_6328_NZ0043.nc`]         
+#	   ifsnr: [30000, 9999999] [end]
 
 #           cameraset: [0.18, 554]
 #           filter: [1]     
@@ -136,7 +149,8 @@ filter: [1]
 # Full daylight stuff:
 ifsea: [-8, 100] [cont]
 #        runscript: [script_delay]
-        runscript: [haarp_ftp_data]        
+        runscript: [haarp_ftp_data]   
+	set_status: [`Idle`]     
 ifsea: [-8, 100] [loop]
 
 

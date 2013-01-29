@@ -41,8 +41,8 @@ pro AFA_mirror,  drive_to_pos = drive_to_pos, $
 		tx = string(13B)
 
 	;\\ Set current limits
-		comms_wrapper, port, dll_name, type='moxa', /write, data = 'LCC1200'  + tx ;\\ set these here to be safe...
-		comms_wrapper, port, dll_name, type='moxa', /write, data = 'LPC1500' + tx
+		comms_wrapper, port, dll_name, type='moxa', /write, data = 'LCC1300'  + tx ;\\ set these here to be safe...
+		comms_wrapper, port, dll_name, type='moxa', /write, data = 'LPC1700' + tx
 
 	;\\ Drive to sky or cal position:
 		if keyword_set(drive_to_pos) then begin
