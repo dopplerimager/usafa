@@ -56,6 +56,8 @@ pro AFA_mirror,  drive_to_pos = drive_to_pos, $
 
 			;\\ Close notification window
 				if widget_info(base, /valid) eq 1 then widget_control, base, /destroy
+
+				console->log, 'Drove motor to: ' + string(drive_to_pos, f='(i0)'), 'InstrumentSpecific'
 		endif
 
 
@@ -91,6 +93,8 @@ pro AFA_mirror,  drive_to_pos = drive_to_pos, $
 
 			;\\ Close notification window
 				if widget_info(base, /valid) eq 1 then widget_control, base, /destroy
+
+			console->log, 'Homed motor to: ' + strupcase(home_motor), 'InstrumentSpecific'
 		endif
 
 	read_pos = drive_motor(port, dll_name, /readpos)
@@ -168,6 +172,8 @@ pro AFA_filter, filter_number, $
 
 	;\\ CLose the message box
 		if widget_info(base, /valid) eq 1 then widget_control, base, /destroy
+
+		console->log, 'Selected filter: ' + string(filter_number, f='(i0)'), 'InstrumentSpecific'
 
 	;\\ Restart the camera
 		res = call_external(misc.dll_name, 'uStartAcquisition')
